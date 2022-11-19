@@ -1,1 +1,10 @@
 venv
+train.zip
+train
+label_master.tsv
+train_master.tsv
+__pycache__
+test.zip
+test
+sample
+sample.csv
