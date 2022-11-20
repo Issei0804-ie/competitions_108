@@ -9,7 +9,7 @@ WORK_DIR = "workdir"
 REPOSITORY_NAME = "competitions_108"
 GIT_LINK = "https://github.com/Issei0804-ie/competitions_108.git"
 BRUNCH_NAME = "main"
-RSYNC_DATA = "train"
+RSYNC_FILES = ["train", "train_master.tsv"]
 IMAGE_SOURCE = os.path.join("~", WORK_DIR, "torch.sif")
 
 host.run(f"mkdir -p {os.path.join(WORK_DIR, REPOSITORY_NAME)}")
@@ -23,7 +23,8 @@ with host.cd(os.path.join(WORK_DIR, REPOSITORY_NAME)):
     with host.cd(BRUNCH_NAME):
         result = host.run(f"git pull")
         print(result)
-        os.system(f"rsync -avhz {RSYNC_DATA} {HOSTNAME}:{os.path.join('~', WORK_DIR, REPOSITORY_NAME, BRUNCH_NAME)}")
+        for file in RSYNC_FILES:
+            os.system(f"rsync -avhz {file} {HOSTNAME}:{os.path.join('~', WORK_DIR, REPOSITORY_NAME, BRUNCH_NAME)}")
         host.run(f"make slurm-run")
 
 
