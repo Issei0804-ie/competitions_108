@@ -7,6 +7,7 @@ import pytorch_lightning as pl
 import torch
 from pytorch_lightning.callbacks import LearningRateMonitor
 from pytorch_lightning.loggers import TensorBoardLogger
+
 import conf
 import src.dataset_builder
 from src.model import TrainModel
@@ -35,7 +36,10 @@ train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(
 
 
 train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=32 * conf.BATCH_SIZE, num_workers=os.cpu_count(), shuffle=True
+    train_dataset,
+    batch_size=32 * conf.BATCH_SIZE,
+    num_workers=os.cpu_count(),
+    shuffle=True,
 )
 val_loader = torch.utils.data.DataLoader(
     val_dataset, batch_size=32 * conf.BATCH_SIZE, num_workers=os.cpu_count()

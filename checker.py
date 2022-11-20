@@ -6,8 +6,9 @@ import warnings
 import pytorch_lightning as pl
 import torch.utils.data
 from torch.utils.data import DataLoader, Subset
-from src.model import TrainModel
+
 from src.dataset_builder import TestDataset
+from src.model import TrainModel
 
 if __name__ == "__main__":
     logging.getLogger("pytorch_lightning").setLevel(logging.NOTSET)

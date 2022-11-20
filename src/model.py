@@ -1,8 +1,8 @@
 import pytorch_lightning as pl
 import torch
 import torchmetrics
-from torchvision.models import resnet18, vgg13
 from torchmetrics import F1Score
+from torchvision.models import resnet18, vgg13
 
 
 class ImageClassifierModel(torch.nn.Module):

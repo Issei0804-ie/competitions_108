@@ -1,7 +1,10 @@
 import argparse
-from fabric import Connection
 import os
+
+from fabric import Connection
+
 import conf
+
 HOSTNAME = "ie-gpu"
 host = Connection(HOSTNAME)
 
@@ -27,9 +30,7 @@ with host.cd(os.path.join(WORK_DIR, REPOSITORY_NAME)):
         result = host.run(f"git pull")
         print(result)
         for file in RSYNC_FILES:
-            os.system(f"rsync -avhz {file} {HOSTNAME}:{os.path.join('~', WORK_DIR, REPOSITORY_NAME, BRANCH_NAME)}")
+            os.system(
+                f"rsync -avhz {file} {HOSTNAME}:{os.path.join('~', WORK_DIR, REPOSITORY_NAME, BRANCH_NAME)}"
+            )
         host.run(f"make slurm-run")
-
-
-
-
