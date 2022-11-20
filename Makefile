@@ -1,5 +1,5 @@
 build-sif:
-singularity build --fakeroot output/torch.sif torch.def
+	singularity build --fakeroot output/torch.sif torch.def
 
 run:
 	singularity run --nv output/torch.sif python3 main.py vgg
