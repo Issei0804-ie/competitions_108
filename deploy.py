@@ -1,14 +1,16 @@
-import os.path
-
+import argparse
 from fabric import Connection
 import os
 HOSTNAME = "ie-gpu"
 host = Connection(HOSTNAME)
 
+p = argparse.ArgumentParser(description="deploy to ie-gpu")
+p.add_argument("branch_name")
+args = p.parse_args()
+BRANCH_NAME = args.branch_name
 WORK_DIR = "workdir"
 REPOSITORY_NAME = "competitions_108"
 GIT_LINK = "https://github.com/Issei0804-ie/competitions_108.git"
-BRUNCH_NAME = "main"
 RSYNC_FILES = ["train", "train_master.tsv"]
 IMAGE_SOURCE = os.path.join("~", WORK_DIR, "torch.sif")
 
@@ -17,14 +19,14 @@ with host.cd(os.path.join(WORK_DIR, REPOSITORY_NAME)):
     result = host.run("ls")
     dirs = result.stdout.split("\n")
     print(dirs)
-    if not BRUNCH_NAME in dirs:
-        host.run(f"git clone {GIT_LINK} -b {BRUNCH_NAME} {BRUNCH_NAME}")
-        host.run(f"cp {IMAGE_SOURCE} {BRUNCH_NAME}")
-    with host.cd(BRUNCH_NAME):
+    if not BRANCH_NAME in dirs:
+        host.run(f"git clone {GIT_LINK} -b {BRANCH_NAME} {BRANCH_NAME}")
+        host.run(f"cp {IMAGE_SOURCE} {BRANCH_NAME}")
+    with host.cd(BRANCH_NAME):
         result = host.run(f"git pull")
         print(result)
         for file in RSYNC_FILES:
-            os.system(f"rsync -avhz {file} {HOSTNAME}:{os.path.join('~', WORK_DIR, REPOSITORY_NAME, BRUNCH_NAME)}")
+            os.system(f"rsync -avhz {file} {HOSTNAME}:{os.path.join('~', WORK_DIR, REPOSITORY_NAME, BRANCH_NAME)}")
         host.run(f"make slurm-run")
 
 
