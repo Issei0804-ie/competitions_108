@@ -11,7 +11,7 @@ BRANCH_NAME = args.branch_name
 WORK_DIR = "workdir"
 REPOSITORY_NAME = "competitions_108"
 GIT_LINK = "https://github.com/Issei0804-ie/competitions_108.git"
-RSYNC_FILES = ["train", "train_master.tsv"]
+RSYNC_FILES = ["train", "train_master.tsv", "aug_dataset"]
 IMAGE_SOURCE = os.path.join("~", WORK_DIR, "torch.sif")
 
 host.run(f"mkdir -p {os.path.join(WORK_DIR, REPOSITORY_NAME)}")

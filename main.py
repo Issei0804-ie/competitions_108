@@ -22,7 +22,8 @@ with open("train_master.tsv", mode="r") as fh:
     reader = csv.reader(fh, delimiter="\t")
     filepath2label = {row[0]: row[1] for row in reader}
 
-dataset = src.dataset_builder.LabeledDataset(["train"], filepath2label)
+# jsonかymlとかで指定できると良さそう
+dataset = src.dataset_builder.LabeledDataset(["train", "aug_dataset"], filepath2label)
 
 n_samples = len(dataset)
 train_size = int(len(dataset) * 0.6)
