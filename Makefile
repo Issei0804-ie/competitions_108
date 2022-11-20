@@ -2,7 +2,7 @@ build-sif:
 	singularity build --fakeroot output/torch.sif torch.def
 
 run:
-	singularity run --nv output/torch.sif python3 main.py vgg
+	singularity run --nv torch.sif python3 main.py vgg
 
 pip:
 	singularity run output/torch.sif pip install -r requirements.txt
