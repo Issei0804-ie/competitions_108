@@ -7,7 +7,7 @@ import pytorch_lightning as pl
 import torch
 from pytorch_lightning.callbacks import LearningRateMonitor
 from pytorch_lightning.loggers import TensorBoardLogger
-
+import conf
 import src.dataset_builder
 from src.model import TrainModel
 
@@ -22,7 +22,7 @@ with open("train_master.tsv", mode="r") as fh:
     reader = csv.reader(fh, delimiter="\t")
     filepath2label = {row[0]: row[1] for row in reader}
 
-dataset = src.dataset_builder.LabeledDataset(["train"], filepath2label)
+dataset = src.dataset_builder.LabeledDataset(conf.DATA_SET, filepath2label)
 
 n_samples = len(dataset)
 train_size = int(len(dataset) * 0.6)
@@ -35,13 +35,13 @@ train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(
 
 
 train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=32 * 8, num_workers=os.cpu_count(), shuffle=True
+    train_dataset, batch_size=32 * conf.BATCH_SIZE, num_workers=os.cpu_count(), shuffle=True
 )
 val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=32 * 8, num_workers=os.cpu_count()
+    val_dataset, batch_size=32 * conf.BATCH_SIZE, num_workers=os.cpu_count()
 )
 test_loader = torch.utils.data.DataLoader(
-    test_dataset, batch_size=32 * 8, num_workers=os.cpu_count()
+    test_dataset, batch_size=32 * conf.BATCH_SIZE, num_workers=os.cpu_count()
 )
 checkpoint = pl.callbacks.ModelCheckpoint(
     monitor="val_loss",
