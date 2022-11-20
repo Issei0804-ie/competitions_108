@@ -1,17 +1,17 @@
 build-sif:
-        singularity build --fakeroot output/torch.sif torch.def
+singularity build --fakeroot output/torch.sif torch.def
 
 run:
-        singularity run --nv output/torch.sif python3 main.py vgg
+	singularity run --nv output/torch.sif python3 main.py vgg
 
 pip:
-        singularity run output/torch.sif pip install -r requirements.txt
+	singularity run output/torch.sif pip install -r requirements.txt
 
 tensorboard:
-        singularity exec output/torch.sif tensorboard --bind_all --logdir ./
+	singularity exec output/torch.sif tensorboard --bind_all --logdir ./
 
 slurm-run:
-        sbatch run.sbatch
+	sbatch run.sbatch
 
 local-run:
-        python main.py
+	python main.py
