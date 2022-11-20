@@ -1,14 +1,14 @@
 import pytorch_lightning as pl
 import torch
 import torchmetrics
-from torchvision.models import resnet18, vgg13
+from torchvision.models import resnet18, vgg13, vgg11
 from torchmetrics import F1Score
 
 
 class ImageClassifierModel(torch.nn.Module):
     def __init__(self, lr: float, num_group: int):
         super().__init__()
-        self.model = vgg13(pretrained=True)
+        self.model = vgg11(pretrained=True)
         self.regressor = torch.nn.Linear(1000, num_group)
         self.lr = lr
 

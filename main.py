@@ -35,13 +35,13 @@ train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(
 
 
 train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=32 * 8, num_workers=os.cpu_count(), shuffle=True
+    train_dataset, batch_size=32 * 1, num_workers=os.cpu_count(), shuffle=True
 )
 val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=32 * 8, num_workers=os.cpu_count()
+    val_dataset, batch_size=32 * 1, num_workers=os.cpu_count()
 )
 test_loader = torch.utils.data.DataLoader(
-    test_dataset, batch_size=32 * 8, num_workers=os.cpu_count()
+    test_dataset, batch_size=32 * 1, num_workers=os.cpu_count()
 )
 checkpoint = pl.callbacks.ModelCheckpoint(
     monitor="val_loss",
