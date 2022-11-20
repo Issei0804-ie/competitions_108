@@ -40,6 +40,7 @@ class LabeledDataset(Dataset):
         label = self.labels[idx]
         return self.preprocess(image), label
 
+
 class TestDataset(Dataset):
     def __init__(self, dataset_dirs: list):
         self.preprocess = torchvision.transforms.Compose(

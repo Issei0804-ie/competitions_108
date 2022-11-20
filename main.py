@@ -1,3 +1,4 @@
+import argparse
 import csv
 import datetime
 import os.path
@@ -5,11 +6,17 @@ import os.path
 import pytorch_lightning as pl
 import torch
 from pytorch_lightning.callbacks import LearningRateMonitor
+from pytorch_lightning.loggers import TensorBoardLogger
 
 import src.dataset_builder
 from src.model import TrainModel
 
 filepath2label = {}
+
+p = argparse.ArgumentParser(description="学習時に使用するスクリプト")
+p.add_argument("log_name")
+args = p.parse_args()
+log_name = args.log_name
 
 with open("train_master.tsv", mode="r") as fh:
     reader = csv.reader(fh, delimiter="\t")
@@ -28,13 +35,13 @@ train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(
 
 
 train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=32 * 6, num_workers=os.cpu_count(), shuffle=True
+    train_dataset, batch_size=32 * 1, num_workers=os.cpu_count(), shuffle=True
 )
 val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=32 * 6, num_workers=os.cpu_count()
+    val_dataset, batch_size=32 * 1, num_workers=os.cpu_count()
 )
 test_loader = torch.utils.data.DataLoader(
-    test_dataset, batch_size=32 * 6, num_workers=os.cpu_count()
+    test_dataset, batch_size=32 * 1, num_workers=os.cpu_count()
 )
 checkpoint = pl.callbacks.ModelCheckpoint(
     monitor="val_loss",
@@ -44,12 +51,14 @@ checkpoint = pl.callbacks.ModelCheckpoint(
     dirpath="model/",
     filename=f"{str(datetime.datetime.today())}",
 )
-lr_monitor = LearningRateMonitor(logging_interval="step")
+lr_monitor = LearningRateMonitor(logging_interval="epoch")
 
+logger = TensorBoardLogger(save_dir=".", version=log_name)
 
 trainer = pl.Trainer(
+    logger=logger,
     gpus=1,
-    max_epochs=200,
+    max_epochs=100,
     callbacks=[
         checkpoint,
         pl.callbacks.early_stopping.EarlyStopping(monitor="val_loss", mode="min"),

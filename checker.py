@@ -13,7 +13,7 @@ if __name__ == "__main__":
     logging.getLogger("pytorch_lightning").setLevel(logging.NOTSET)
     logging.getLogger("torch.utils.data").setLevel(logging.NOTSET)
     logging.getLogger("transformers").setLevel(logging.NOTSET)
-    warnings.simplefilter('ignore')
+    warnings.simplefilter("ignore")
 
     p = argparse.ArgumentParser(description="学習したモデルを使用して破綻検出を行うツール")
     p.add_argument("checkpoint")
@@ -22,21 +22,19 @@ if __name__ == "__main__":
     cptk = args.checkpoint
     data_dir = args.data_dir
 
-    trainer = pl.Trainer(
-        accelerator='gpu', devices=1
-    )
+    trainer = pl.Trainer(accelerator="gpu", devices=1)
 
     model = TrainModel(0.0001, 20)
 
     dataset = TestDataset([data_dir])
-    test_loader = DataLoader(
-        dataset, batch_size=32 * 5, num_workers=os.cpu_count()
-    )
+    test_loader = DataLoader(dataset, batch_size=32 * 5, num_workers=os.cpu_count())
     hoge = trainer.predict(model=model, dataloaders=test_loader, ckpt_path=cptk)
     print(len(hoge))
     result = []
     for fuga in hoge:
-        result.extend(torch.softmax(fuga,-1).tolist())
+        result.extend(torch.softmax(fuga, -1).tolist())
 
     for i in range(10000):
-        print(f"test_{str(i).zfill(5)}.png,{str(result[i]).replace('[', '').replace(']', '')}")
+        print(
+            f"test_{str(i).zfill(5)}.png,{str(result[i]).replace('[', '').replace(']', '')}"
+        )
